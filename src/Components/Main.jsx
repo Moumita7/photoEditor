@@ -57,16 +57,7 @@ const FILTER_OPTIONS=[
     },
     unit: '%'
   },
-  {
-    name:"Hue Rotate",
-    property:'hue-rotate',
-    value:0,
-    range:{
-      min:0,
-      max:360
-    },
-    unit: 'deg'
-  },
+
   {
     name:"Blur",
     property:'blur',
@@ -77,31 +68,50 @@ const FILTER_OPTIONS=[
     },
     unit: 'px'
   },
+  {
+    name:"Hue Rotate",
+    property:'hue-rotate',
+    value:0,
+    range:{
+      min:0,
+      max:360
+    },
+    unit: 'deg'
+  },
 ]
 
 function Main() {
 const [selectedOptionIndex,setSelectedOptionIndex]=useState(0)
 const [options,setOptions]=useState(FILTER_OPTIONS)
 let selectedOption=options[selectedOptionIndex]
+let [st,setSt]=useState("")
+
 
 let handleChangeSlider=({target})=>{
   setOptions(prev=>{
       return prev.map((option,index)=>{
         if(index !== selectedOptionIndex) return option
+        setSt({...option,value:target.value})
         return {...option,value:target.value}
       })
   })
 
 }
-
+console.log("sttttt",st)
 let getPicStyle=()=>{
 let filterdOptions=options.map(option=>{
   return `${option.property}(${option.value}${option.unit})`
 })
-console.log(filterdOptions.join(" "))
+// console.log(filterdOptions.join(" "))
+// setSt({filter:filterdOptions.join(" ")})
 return {filter:filterdOptions.join(" ")}
 }
+// console.log("getPicStyle",filterdOptions)
 
+
+// let gett=()=>{
+//   setSt(getPicStyle)
+// }
 let src=localStorage.getItem("url")
 
   return (
@@ -129,6 +139,8 @@ let src=localStorage.getItem("url")
       </Box>
       <a href={src} download="mypic" style={getPicStyle()}>download</a>
 
+
+
       {/* <h2>bghbn</h2> */}
       <Slider
         min={selectedOption.range.min}
@@ -137,7 +149,9 @@ let src=localStorage.getItem("url")
         handleChange={handleChangeSlider}
 
       />
+
     </Box>
+
     </Box>
   )
 }
